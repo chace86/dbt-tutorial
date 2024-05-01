@@ -8,9 +8,19 @@ sources:
       tables:
           - name: customers
             description: One record per customer.
+            columns:
+              - name: id
+                tests:
+                  - unique
+                  - not_null
           - name: orders
             description: One record per order. Includes cancelled and deleted orders.
-            loaded_at_field: _etl_loaded_at # timestamp field to chedk for freshness
+            columns:
+              - name: id
+                tests:
+                  - unique
+                  - not_null
+            loaded_at_field: _etl_loaded_at # timestamp field to check for freshness
             freshness: # freshness configuration
               warn_after:
                 count: 12
@@ -25,8 +35,13 @@ sources:
       tables:
         - name: payment
           description: Stripe payment data
-          loaded_at_field: _batched_at # timestamp field to chedk for freshness
-          freshness: # freshness configuration
+          columns:
+            - name: id
+              tests:
+                - unique
+                - not_null
+          loaded_at_field: _batched_at
+          freshness:
             warn_after:
               count: 12
               period: hour
