@@ -10,6 +10,14 @@ sources:
             description: One record per customer.
           - name: orders
             description: One record per order. Includes cancelled and deleted orders.
+            loaded_at_field: _etl_loaded_at # timestamp field to chedk for freshness
+            freshness: # freshness configuration
+              warn_after:
+                count: 12
+                period: hour
+              error_after:
+                count: 24
+                period: hour
     - name: stripe
       description: Stripe data
       database: raw
@@ -17,3 +25,11 @@ sources:
       tables:
         - name: payment
           description: Stripe payment data
+          loaded_at_field: _batched_at # timestamp field to chedk for freshness
+          freshness: # freshness configuration
+            warn_after:
+              count: 12
+              period: hour
+            error_after:
+              count: 24
+              period: hour
